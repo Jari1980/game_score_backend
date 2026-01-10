@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Table(name = "matches")
 public class Match {
     @Id
-    @NonNull
+    //@NonNull this will start as null, when calling matchrepository.save(match) ID is generated when saved
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long matchID;
     @NonNull
@@ -31,6 +31,6 @@ public class Match {
     private int homeTeamScore;
     @NonNull
     private int awayTeamScore;
-    @NonNull
+    //@NonNull this is set with helper function hence null at start, could give it a initial value instead this way goes aswell
     private String winningTeam;
 }
