@@ -5,12 +5,14 @@ import { pool } from "../db/db.js";
 export async function submitMatchScore(request) {
   const { matchDate, homeTeam, awayTeam, homeTeamScore, awayTeamScore } = request;
 
-  const winningTeam =
-    homeTeamScore > awayTeamScore
-      ? homeTeam
-      : awayTeamScore > homeTeamScore
-      ? awayTeam
-      : null;
+  //if/else instead of ternary
+  let winningTeam = "DRAW"  
+  if(homeTeamScore > awayTeamScore){
+    winningTeam = homeTeam
+  } else if(homeTeamScore < awayTeamScore){
+    winningTeam = awayTeam
+  }
+  
 
   const query = `
     INSERT INTO matches (
@@ -33,13 +35,26 @@ export async function submitMatchScore(request) {
 }
 
 // Get all matches ordered by match_date
+//Replaced * with all column heads, incase we want to customize
 export async function getAllMatches() {
-  const { rows } = await pool.query("SELECT * FROM matches ORDER BY match_date DESC");
+  const { rows } = await pool.query(`
+    SELECT
+    matchid,
+    entry_created,
+    match_date,
+    home_team,
+    away_team,
+    home_team_score,
+    away_team_score,
+    winning_team
+    
+    FROM matches 
+    ORDER BY match_date DESC
+    `);
   return rows;
 }
 
-
-//Search all matches by team
+//Search all matches by team, yes this is fancy AI
 export async function findMatchesByTeam(team) {
   const { rows } = await pool.query(
     `SELECT * FROM matches

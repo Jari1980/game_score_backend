@@ -7,6 +7,7 @@ import {
 
 const router = express.Router();
 
+//TODO later: add req.body checks (fields are not null, strip non A-z 0-9 characters)
 // POST /api/v1/match -> create a new match
 router.post("/", async (req, res) => {
   try {

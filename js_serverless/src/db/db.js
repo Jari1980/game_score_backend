@@ -8,5 +8,5 @@ const { Pool } = pkg;
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   // Only enable SSL if DATABASE_URL indicates it
-  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false // needed for cloud DBs
+  //ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false // needed for cloud DBs
 });
