@@ -1,3 +1,14 @@
+import app from "./app/app.js";
+
+// Start Express server locally
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
+
+
+/*
+//Initial rearrenged into folders
 import express from "express";
 import path from "path";
 
@@ -34,3 +45,4 @@ app.get("/page", (_req, res) => {
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);
 });
+*/
