@@ -29,3 +29,7 @@ Check README.md inside folder for install instructions.
 
 - GET /api/v1/match, Get all matches
 - GET /api/v1/match/search?team=Team C, search all results for a team with Key "team" and value (here) "Team C"
+
+## Contributions
+
+All contributions and suggestions welcome. See how you can help in [CONTRIBUTING.md](.github/CONTRIBUTING.md)
