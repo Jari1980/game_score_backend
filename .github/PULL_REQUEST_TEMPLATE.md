@@ -11,9 +11,13 @@
 
 ## Checklist
 
+Add x inside [] to check if applicable, else leave unchecked:
+
+Required
+
 - [ ] Code runs locally
 
-if applicable, else leave unchecked:
+Optional
 
 - [ ] Tests added or updated
 - [ ] Documentation updated
