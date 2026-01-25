@@ -18,7 +18,8 @@ app.use(corsMiddleware); // allow cross-origin requests
 // Root route - JSON message
 app.get("/", (_req, res) => {
   res.json({
-    message: "Welcome to Match App! Visit /page for the UI or /api/v1/match for API",
+    message:
+      "Welcome to Match App! Visit /page for the UI or /api/v1/match for API",
   });
 });
 

@@ -4,13 +4,15 @@ import {
   getAllMatches,
   findMatchesByTeam,
 } from "../../services/matchService.js";
+import { validateMatch } from "../../utils/validateMatch.js";
 
 const router = express.Router();
 
-//TODO later: add req.body checks (fields are not null, strip non A-z 0-9 characters)
 // POST /api/v1/match -> create a new match
 router.post("/", async (req, res) => {
   try {
+    // Validating input
+    validateMatch(req.body);
     const match = await submitMatchScore(req.body);
     res.status(201).json(match); // return created match
   } catch (err) {
