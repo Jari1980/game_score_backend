@@ -1,5 +1,4 @@
 export function validateMatch(match) {
-
   // Check required string fields
   if (!match.homeTeam || !match.awayTeam) {
     throw new Error("homeTeam and awayTeam are required");
@@ -19,7 +18,10 @@ export function validateMatch(match) {
   }
 
   // Check scores
-  if (typeof match.homeTeamScore !== "number" || typeof match.awayTeamScore !== "number") {
+  if (
+    typeof match.homeTeamScore !== "number" ||
+    typeof match.awayTeamScore !== "number"
+  ) {
     throw new Error("Scores must be numbers");
   }
 
