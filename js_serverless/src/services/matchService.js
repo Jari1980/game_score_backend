@@ -1,18 +1,17 @@
 import { pool } from "../db/db.js";
 
-
 //Insert a new match
 export async function submitMatchScore(request) {
-  const { matchDate, homeTeam, awayTeam, homeTeamScore, awayTeamScore } = request;
+  const { matchDate, homeTeam, awayTeam, homeTeamScore, awayTeamScore } =
+    request;
 
   //if/else instead of ternary
-  let winningTeam = "DRAW"  
-  if(homeTeamScore > awayTeamScore){
-    winningTeam = homeTeam
-  } else if(homeTeamScore < awayTeamScore){
-    winningTeam = awayTeam
+  let winningTeam = "DRAW";
+  if (homeTeamScore > awayTeamScore) {
+    winningTeam = homeTeam;
+  } else if (homeTeamScore < awayTeamScore) {
+    winningTeam = awayTeam;
   }
-  
 
   const query = `
     INSERT INTO matches (
@@ -28,7 +27,14 @@ export async function submitMatchScore(request) {
     RETURNING *;
   `;
 
-  const values = [matchDate, homeTeam, awayTeam, homeTeamScore, awayTeamScore, winningTeam];
+  const values = [
+    matchDate,
+    homeTeam,
+    awayTeam,
+    homeTeamScore,
+    awayTeamScore,
+    winningTeam,
+  ];
 
   const { rows } = await pool.query(query, values);
   return rows[0];
@@ -60,7 +66,7 @@ export async function findMatchesByTeam(team) {
     `SELECT * FROM matches
      WHERE home_team ILIKE $1 OR away_team ILIKE $1
      ORDER BY match_date DESC`,
-    [`%${team}%`] // For case insensitive
+    [`%${team}%`], // For case insensitive
   );
   return rows;
 }
