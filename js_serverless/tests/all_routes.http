@@ -1,0 +1,23 @@
+@API_URL=http://localhost:3000/api/v1/match
+
+### create
+POST {{API_URL}}
+Content-Type: application/json
+
+{
+  "matchDate": "2020-04-20",
+  "homeTeam": "Team 3",
+  "awayTeam": "Team 4",
+  "homeTeamScore": 5,
+  "awayTeamScore": 5
+}
+
+### get all
+GET {{API_URL}}
+Content-Type: application/json
+
+### search
+@searchTerm=team
+
+GET {{API_URL}}/search?team={{searchTerm}}
+Content-Type: application/json
