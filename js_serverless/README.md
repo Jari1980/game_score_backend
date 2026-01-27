@@ -5,39 +5,57 @@ Build locally with non-serverless (express). Copy functions with minor adjustmen
 ## Setup
 
 1. Install Node https://nodejs.org/en
-2. Install PostgreSQL<br>
-   Create the database:<br>
-   `CREATE DATABASE game_score;`<br>
-   Create the matches table:<br>
-   `CREATE TABLE IF NOT EXISTS game_score.matches (`<br>
-   `  matchid BIGINT PRIMARY KEY,`<br>
-   `  entry_created DATE DEFAULT CURRENT_DATE,`<br>
-   `  match_date DATE NOT NULL,`<br>
-   `  home_team VARCHAR(255) NOT NULL,`<br>
-   `  away_team VARCHAR(255) NOT NULL,`<br>
-   `  home_team_score INT,`<br>
-   `  away_team_score INT,`<br>
-   `  winning_team VARCHAR(255)`<br>
-   `);`<br>
-3. Create a ".env" file under js_serverless, this should also be in gitignore.<br>
-   In .env you need a connection string to PostgreSQL<br>
-   \# PostgreSQL connection string<br>
-   \# Format: `postgres://USER:PASSWORD@HOST:PORT/DATABASE`<br>
-   Local with default PostgreSQL port should be something like:<br>
-   `DATABASE_URL=postgres://{your username}:{your password}@localhost5432/game_score`<br>
-   \# Optional: local server port (used only for local Express dev)
-   `PORT=3000<br>`<br>
-   \# Development Environment<br>
-   `NODE_ENV=development`<br>
-   `CORS_ORIGIN=\*`<br>
-   \# Production Environment - Not yet tested, the idea is that we can toggle between dev and prod in this file<br>
-   \# NODE_ENV=production<br>
-   \# CORS_ORIGINS=?<br>
-4. run server with `cd js_serverless && npm run dev`
+2. Install PostgreSQL
+3. Create database
+
+```sql
+CREATE DATABASE game_score;
+```
+
+4. Create table
+
+```sql
+CREATE TABLE IF NOT EXISTS matches (
+  matchid BIGINT PRIMARY KEY,
+  entry_created DATE DEFAULT CURRENT_DATE,
+  match_date DATE NOT NULL,
+  home_team VARCHAR(255) NOT NULL,
+  away_team VARCHAR(255) NOT NULL,
+  home_team_score INT,
+  away_team_score INT,
+  winning_team VARCHAR(255)
+);
+```
+
+5. Create a ".env" file under js_serverless, this should also be in gitignore.
+
+```env
+# PostgreSQL connection string
+# Format: `postgres://USER:PASSWORD@HOST:PORT/DATABASE`
+# Local with default PostgreSQL port should be something like:
+DATABASE_URL=postgres://{your username}:{your password}@localhost:5432/game_score
+
+# Optional: local server port (used only for local Express dev)
+PORT=3000
+
+# Development Environment
+NODE_ENV=development
+CORS_ORIGIN=*
+
+# Production Environment - Not yet tested, the idea is that we can toggle between dev and prod in this file
+# NODE_ENV=production
+# CORS_ORIGIN=?
+```
+
+6. run server with `cd js_serverless && npm run dev`
 
 ## Tests
 
-Manual tests for now
+### validateMatch
+
+run with `cd js_serverless && npm test`
+
+### Manual
 
 Options
 
