@@ -15,6 +15,7 @@ export async function submitMatchScore(request) {
 
   const query = `
     INSERT INTO matches (
+      matchid,
       entry_created,
       match_date,
       home_team,
@@ -23,7 +24,7 @@ export async function submitMatchScore(request) {
       away_team_score,
       winning_team
     )
-    VALUES (CURRENT_DATE, $1, $2, $3, $4, $5, $6)
+    VALUES (DEFAULT, CURRENT_DATE, $1, $2, $3, $4, $5, $6)
     RETURNING *;
   `;
 
