@@ -1,0 +1,31 @@
+name: Code format check
+
+on:
+  push:
+    branches:
+      - rewrite
+      # - main
+  pull_request:
+    branches:
+      - rewrite
+      # - main
+  workflow_dispatch:
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: cd js_serverless && npm ci
+
+      - name: Run Prettier check
+        run: npx prettier --check "js_serverless/*.{js,ts,jsx,tsx,css,scss,md,json,yml,yaml}"
