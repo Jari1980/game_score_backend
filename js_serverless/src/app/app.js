@@ -5,6 +5,25 @@ import { fileURLToPath } from "url";
 import corsMiddleware from "./middleware/cors.js";
 import matchRoutes from "./routes/matchRoutes.js";
 
+import swaggerJsDoc from "swagger-jsdoc";
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Game Score API",
+      version: "1.0.0",
+      description: "Serverless JS API for learning purpose"
+    },
+    servers: [
+      {
+        url:"http://localhost:3000"
+      },
+    ],
+  },
+  apis: ["./src/app/routes/matchRoutes.js"]
+};
+const specs = swaggerJsDoc(options);
+
 const app = express();
 
 // __dirname for ES modules
@@ -17,14 +36,22 @@ app.use(corsMiddleware); // allow cross-origin requests
 
 // Root route - JSON message
 app.get("/", (_req, res) => {
-  res.json({
-    message:
-      "Welcome to Match App! Visit /page for the UI or /api/v1/match for API",
-  });
+  res.send(`
+    <h1>Welcome to Match App!</h1>
+    <p>This page will be reworked</p>
+    <p>API endpoint: <a href="/api/v1/match">/api/v1/match</a></p>
+    <p>OpenAPI spec: <a href="/openapi.json">/openapi.json</a></p>
+    <p>index.html: <a href="/page">/page</a></p>
+    <p>Use the API to submit or query match scores.</p>
+  `);
 });
 
 // API routes
 app.use("/api/v1/match", matchRoutes);
+app.get("/openapi.json", (_req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(specs);
+});
 
 // Serve static files from js_serverless/public
 app.use(express.static(path.resolve(__dirname, "../../public")));
