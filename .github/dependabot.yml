@@ -1,12 +1,17 @@
 version: 2
 updates:
-  - package-ecosystem: "maven"
-    directory: "/java_backend"
+  # - package-ecosystem: "maven"
+  #   directory: "/java_backend"
+  #   schedule:
+  #     interval: "monthly"
+  #     time: "01:00"
+  - package-ecosystem: "npm"
+    directory: "/js_serverless"
     schedule:
       interval: "monthly"
       time: "01:00"
-  - package-ecosystem: "maven"
-    directory: "/js_serverless"
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "monthly"
       time: "01:00"
