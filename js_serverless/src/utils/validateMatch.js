@@ -1,4 +1,4 @@
-export function validateMatch(match) {
+export default function validateMatch(match) {
   // Check required string fields
   if (!match.homeTeam || !match.awayTeam) {
     throw new Error("homeTeam and awayTeam are required");
