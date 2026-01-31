@@ -4,12 +4,12 @@ import {
   getAllMatches,
   findMatchesByTeam,
 } from "../../services/matchService.js";
-import { validateMatch } from "../../utils/validateMatch.js";
+import validateMatch from "../../utils/validateMatch.js";
 
 const router = express.Router();
 
 //Below are two swagger components. GetAllMatches is used in "create new match",
-//"Get all matches" and "find matches by team name", Component SubmitMatchScore is 
+//"Get all matches" and "find matches by team name", Component SubmitMatchScore is
 //used in "create new match".
 
 /**
@@ -132,7 +132,6 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 /**
  * @swagger
