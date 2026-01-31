@@ -7,7 +7,7 @@
 ## Related Issue
 
 <!--- Please link to the issue here: -->
-<!-- Leave blank if no related issue -->
+<!--- Leave blank if no related issue -->
 
 ## Checklist
 
