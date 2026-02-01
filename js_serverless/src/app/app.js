@@ -4,6 +4,9 @@ import { fileURLToPath } from "url";
 
 import corsMiddleware from "./middleware/cors.js";
 import matchRoutes from "./routes/matchRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import { seedSuperAdmin } from "../db/seedSuperAdmin.js";
 
 import swaggerJsDoc from "swagger-jsdoc";
 const options = {
@@ -12,15 +15,15 @@ const options = {
     info: {
       title: "Game Score API",
       version: "1.0.0",
-      description: "Serverless JS API for learning purpose"
+      description: "Serverless JS API for learning purpose",
     },
     servers: [
       {
-        url:"http://localhost:3000"
+        url: "http://localhost:3000",
       },
     ],
   },
-  apis: ["./src/app/routes/matchRoutes.js"]
+  apis: ["./src/app/routes/matchRoutes.js"],
 };
 const specs = swaggerJsDoc(options);
 
@@ -33,6 +36,9 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(express.json()); // parse JSON request bodies
 app.use(corsMiddleware); // allow cross-origin requests
+
+// Seed SuperAdmin on startup
+seedSuperAdmin();
 
 // Root route - JSON message
 app.get("/", (_req, res) => {
@@ -47,7 +53,16 @@ app.get("/", (_req, res) => {
 });
 
 // API routes
+// Match endpoints
 app.use("/api/v1/match", matchRoutes);
+
+//Auth endpoints (register, login, me)
+app.use("/api/v1/auth", authRoutes);
+
+// Admin endpoints (list users, future role management)
+app.use("/api/v1/admin", adminRoutes);
+
+//Swagger
 app.get("/openapi.json", (_req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send(specs);
