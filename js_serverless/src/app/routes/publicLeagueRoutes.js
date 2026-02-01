@@ -8,7 +8,7 @@ import { PUBLIC_LEAGUE_TEAMS } from "../../db/publicLeague.js";
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/public-league:
  *   get:
  *     tags: [Public League]
@@ -16,6 +16,22 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Public league basic info
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   example: Public League
+ *                 description:
+ *                   type: string
+ *                   example: Read-only public league with visible matches.
+ *                 teams:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["Team A", "Team B", "Team C"]
  */
 router.get("/", (_req, res) => {
   res.json({
@@ -26,7 +42,7 @@ router.get("/", (_req, res) => {
 });
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/public-league/matches:
  *   get:
  *     tags: [Public League]
@@ -34,6 +50,39 @@ router.get("/", (_req, res) => {
  *     responses:
  *       200:
  *         description: All public league matches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   matchId:
+ *                     type: integer
+ *                     description: Match ID
+ *                   homeTeam:
+ *                     type: string
+ *                     description: Name of the home team
+ *                   awayTeam:
+ *                     type: string
+ *                     description: Name of the away team
+ *                   homeTeamScore:
+ *                     type: integer
+ *                     description: Score of the home team
+ *                   awayTeamScore:
+ *                     type: integer
+ *                     description: Score of the away team
+ *                   matchDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Date of the match
+ *                   entryCreated:
+ *                     type: string
+ *                     format: date
+ *                     description: Date when the match was entered into the system
+ *                   winningTeam:
+ *                     type: string
+ *                     description: Name of the winning team
  */
 router.get("/matches", async (_req, res) => {
   try {
@@ -46,7 +95,7 @@ router.get("/matches", async (_req, res) => {
 });
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/public-league/matches/filter:
  *   post:
  *     tags: [Public League]
@@ -66,8 +115,36 @@ router.get("/matches", async (_req, res) => {
  *     responses:
  *       200:
  *         description: Filtered matches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   matchId:
+ *                     type: integer
+ *                     description: Match ID
+ *                   homeTeam:
+ *                     type: string
+ *                   awayTeam:
+ *                     type: string
+ *                   homeTeamScore:
+ *                     type: integer
+ *                   awayTeamScore:
+ *                     type: integer
+ *                   matchDate:
+ *                     type: string
+ *                     format: date
+ *                   entryCreated:
+ *                     type: string
+ *                     format: date
+ *                   winningTeam:
+ *                     type: string
  *       400:
  *         description: Invalid teams provided
+ *       500:
+ *         description: Server error
  */
 router.post("/matches/filter", async (req, res) => {
   try {
