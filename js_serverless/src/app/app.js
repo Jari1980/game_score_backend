@@ -37,9 +37,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.json()); // parse JSON request bodies
 app.use(corsMiddleware); // allow cross-origin requests
 
-// Seed SuperAdmin on startup
-seedSuperAdmin();
-
 // Root route - JSON message
 app.get("/", (_req, res) => {
   res.send(`

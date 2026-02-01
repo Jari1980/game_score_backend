@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node src/main.js",
+    "seed": "node src/db/seedSuperAdmin.js",
     "fmt": "npx prettier --write .",
     "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest"
   },
