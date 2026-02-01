@@ -11,3 +11,14 @@ CREATE TABLE IF NOT EXISTS matches (
     away_team_score INT,
     winning_team VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hashed VARCHAR(255) NOT NULL,
+    role VARCHAR(10) NOT NULL DEFAULT 'user'
+        CHECK (role IN ('user', 'admin')),
+    entry_created DATE DEFAULT CURRENT_DATE
+);
