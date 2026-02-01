@@ -6,7 +6,7 @@ import corsMiddleware from "./middleware/cors.js";
 import matchRoutes from "./routes/matchRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import { seedSuperAdmin } from "../db/seedSuperAdmin.js";
+import publicLeagueRoutes from "./routes/publicLeagueRoutes.js";
 
 import swaggerJsDoc from "swagger-jsdoc";
 const options = {
@@ -50,6 +50,9 @@ app.get("/", (_req, res) => {
 });
 
 // API routes
+//public league, hard-coded teams
+app.use("/api/v1/public-league", publicLeagueRoutes);
+
 // Match endpoints
 app.use("/api/v1/match", matchRoutes);
 
