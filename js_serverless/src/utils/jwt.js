@@ -2,8 +2,14 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-const secret = process.env.JWT_SECRET || "supersecretkey"; // fallback secret
+const secret = process.env.JWT_SECRET;
 const expiresIn = process.env.JWT_EXPIRES_IN || "1h"; // default 1 hour token
+
+// Fail fast if secret is missing
+if (!secret) {
+  console.error("❌ JWT_SECRET is not set! Please set it in your environment variables.");
+  process.exit(1); // stop the app immediately
+}
 
 /**
  * Generate a JWT token for a user
