@@ -5,102 +5,48 @@ import {
   findMatchesByTeam,
 } from "../../services/matchService.js";
 import validateMatch from "../../utils/validateMatch.js";
+import { verifyToken } from "../../utils/jwt.js";
 
 const router = express.Router();
 
-//Below are two swagger components. GetAllMatches is used in "create new match",
-//"Get all matches" and "find matches by team name", Component SubmitMatchScore is
-//used in "create new match".
-
 /**
- * @swagger
- * components:
- *   schemas:
- *     SubmitMatchScore:
- *       type: object
- *       required:
- *         - homeTeam
- *         - homeTeamScore
- *         - awayTeam
- *         - awayTeamScore
- *         - matchDate
- *       properties:
- *         homeTeam:
- *           type: string
- *           description: Name of the home team
- *         homeTeamScore:
- *           type: integer
- *           description: Score of the home team
- *         awayTeam:
- *           type: string
- *           description: Name of the away team
- *         awayTeamScore:
- *           type: integer
- *           description: Score of the away team
- *         matchDate:
- *           type: string
- *           format: date
- *           description: Date of the match
- *       example:
- *         homeTeam: Team Broccoli
- *         homeTeamScore: 5
- *         awayTeam: Team Apple
- *         awayTeamScore: 2
- *         matchDate: 2026-01-28
+ * Middleware to verify token and optionally check role
  */
+function auth(requiredRole) {
+  return (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     GetAllMatches:
- *       type: object
- *       required:
- *         - matchId
- *         - homeTeam
- *         - homeTeamScore
- *         - awayTeam
- *         - awayTeamScore
- *         - entryCreated
- *         - matchDate
- *         - winningTeam
- *       properties:
- *         matchId:
- *           type: integer
- *           format: int64
- *           description: Auto-generated match ID
- *         homeTeam:
- *           type: string
- *         homeTeamScore:
- *           type: integer
- *         awayTeam:
- *           type: string
- *         awayTeamScore:
- *           type: integer
- *         entryCreated:
- *           type: string
- *           format: date
- *         matchDate:
- *           type: string
- *           format: date
- *         winningTeam:
- *           type: string
- *       example:
- *         matchId: 5
- *         homeTeam: Team Broccoli
- *         homeTeamScore: 5
- *         awayTeam: Team Apple
- *         awayTeamScore: 2
- *         entryCreated: 2026-01-27
- *         matchDate: 2026-01-28
- *         winningTeam: Team Broccoli
- */
+    const token = authHeader.split(" ")[1];
+
+    try {
+      const payload = verifyToken(token);
+
+      // Check role if required
+      if (requiredRole && payload.role !== requiredRole) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
+      // Attach payload to request for downstream use
+      req.user = payload;
+      next();
+    } catch (err) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+  };
+}
+
 
 /**
  * @swagger
  * /api/v1/match:
  *   post:
- *     summary: Submit a new match score
+ *     summary: Submit a new match score (admin only)
+ *     description: Requires a valid JWT with role `admin`
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -114,14 +60,15 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/GetAllMatches'
- *       400:
- *         description: Invalid input
- *       500:
- *         description: Server error
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ *       403:
+ *         description: Forbidden (not an admin)
  */
 
 // POST /api/v1/match -> create a new match
-router.post("/", async (req, res) => {
+// Only admins can add matches
+router.post("/",auth("admin"), async (req, res) => {
   try {
     // Validating input
     validateMatch(req.body);
@@ -138,6 +85,9 @@ router.post("/", async (req, res) => {
  * /api/v1/match:
  *   get:
  *     summary: Get all matches
+ *     description: Any authenticated user
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of matches
@@ -147,10 +97,13 @@ router.post("/", async (req, res) => {
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/GetAllMatches'
+ *       401:
+ *         description: Unauthorized
  */
 
 // GET /api/v1/match -> get all matches
-router.get("/", async (_req, res) => {
+// Any user logged in
+router.get("/", auth(), async (_req, res) => {
   try {
     const matches = await getAllMatches();
     res.json(matches);
@@ -165,30 +118,25 @@ router.get("/", async (_req, res) => {
  * /api/v1/match/search:
  *   get:
  *     summary: Find matches by team name
+ *     description: Any authenticated user
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: team
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *         description: Name of the team to search for
  *     responses:
  *       200:
- *         description: List of matches containing the team
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/GetAllMatches'
- *       400:
- *         description: Missing query parameter
- *       500:
- *         description: Server error
+ *         description: List of matches
+ *       401:
+ *         description: Unauthorized
  */
 
 // GET /api/v1/match/search?team=XYZ -> search by team
-router.get("/search", async (req, res) => {
+// Any user logged in
+router.get("/search", auth(), async (req, res) => {
   try {
     const team = req.query.team;
     if (!team) return res.status(400).send("Missing team query parameter");
