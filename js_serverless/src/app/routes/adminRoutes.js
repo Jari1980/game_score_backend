@@ -9,6 +9,30 @@ import {
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/v1/admin/users:
+ *   get:
+ *     summary: List all users
+ *     description: Admin-only endpoint
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (not an admin)
+ *       500:
+ *         description: Server error
+ */
 router.get("/users", async (req, res) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) return res.status(401).end();
@@ -27,6 +51,44 @@ router.get("/users", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/v1/admin/users/{id}/role:
+ *   put:
+ *     summary: Update a user's role
+ *     description: Admin-only endpoint
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateUserRoleRequest'
+ *     responses:
+ *       200:
+ *         description: Role updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AdminActionResponse'
+ *       400:
+ *         description: Invalid role or self-update attempt
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
 router.put("/users/:id/role", async (req, res) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) return res.status(401).end();
@@ -57,6 +119,38 @@ router.put("/users/:id/role", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/v1/admin/users/{id}:
+ *   delete:
+ *     summary: Delete a user
+ *     description: Admin-only endpoint
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AdminActionResponse'
+ *       400:
+ *         description: Admin cannot delete themselves
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
 router.delete("/users/:id", async (req, res) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) return res.status(401).end();
