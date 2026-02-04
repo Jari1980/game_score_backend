@@ -7,7 +7,9 @@ const expiresIn = process.env.JWT_EXPIRES_IN || "1h"; // default 1 hour token
 
 // Fail fast if secret is missing
 if (!secret) {
-  console.error("❌ JWT_SECRET is not set! Please set it in your environment variables.");
+  console.error(
+    "❌ JWT_SECRET is not set! Please set it in your environment variables.",
+  );
   process.exit(1); // stop the app immediately
 }
 

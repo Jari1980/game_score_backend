@@ -1,0 +1,23 @@
+@API_URL=http://localhost:3000/api/v1/public-league
+
+### info
+GET {{API_URL}}
+
+### fetch all teams from public league
+GET {{API_URL}}/matches
+
+### filter by valid teams
+POST {{API_URL}}/matches/filter
+Content-Type: application/json
+
+{
+  "teams": ["Team C","Team D"]
+}
+
+### invalid team
+POST {{API_URL}}/matches/filter
+Content-Type: application/json
+
+{
+  "teams": ["Team C","Team E"]
+}
