@@ -38,7 +38,6 @@ function auth(requiredRole) {
   };
 }
 
-
 /**
  * @swagger
  * /api/v1/match:
@@ -68,7 +67,7 @@ function auth(requiredRole) {
 
 // POST /api/v1/match -> create a new match
 // Only admins can add matches
-router.post("/",auth("admin"), async (req, res) => {
+router.post("/", auth("admin"), async (req, res) => {
   try {
     // Validating input
     validateMatch(req.body);
