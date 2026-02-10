@@ -10,6 +10,29 @@ import {
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/v1/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Validation error or username taken
+ *       500:
+ *         description: Server error
+ */
 router.post("/register", async (req, res) => {
   const { firstName, lastName, username, password } = req.body;
   if (!firstName || !lastName || !username || !password)
@@ -36,6 +59,29 @@ router.post("/register", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     summary: Login a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       401:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Server error
+ */
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -58,6 +104,21 @@ router.post("/login", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/v1/auth/me:
+ *   get:
+ *     summary: Get current authenticated user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Authenticated user
+ *       401:
+ *         description: Missing or invalid token
+ *       404:
+ *         description: User not found
+ */
 router.get("/me", async (req, res) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith("Bearer ")) return res.status(401).end();
