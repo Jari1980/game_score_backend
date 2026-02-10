@@ -1,0 +1,29 @@
+@API_URL=http://localhost:3000/api/v1/auth
+@token=PLACEHOLDER
+@username=PLACEHOLDER
+@password=PLACEHOLDER
+
+### create
+POST {{API_URL}}/register
+Content-Type: application/json
+
+{
+    "firstName": "My First Name",
+    "lastName": "My Last Name",
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+### login
+POST {{API_URL}}/login
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+### me
+GET {{API_URL}}/me
+Authorization: Bearer {{token}}
+Accept: application/json

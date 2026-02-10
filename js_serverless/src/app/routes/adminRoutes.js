@@ -1,5 +1,4 @@
 import express from "express";
-import { pool } from "../../db/db.js";
 import { verifyToken } from "../../utils/jwt.js";
 import {
   listUsers,
