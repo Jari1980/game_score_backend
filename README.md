@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/k10xp/game_score_frontend/refs/heads/main/public/sportz-scores-logo.svg" alt="Project logo" width="50"> # SomeName Inc. Game Score (backend)
+# <img src="https://raw.githubusercontent.com/k10xp/game_score_frontend/refs/heads/main/public/sportz-scores-logo.svg" alt="Project logo" width="50"> SomeName Inc. Game Score (backend)
 
 Fullstack web application (clean frontend backend split) to log sports game results. Design document at [frontend repo](https://github.com/k10xp/game_score_frontend/blob/main/design/base.md).
 
@@ -10,6 +10,7 @@ User can
 ## Repo structure
 
 - java_backend: Java + Spring Boot
+- js_serverless: JavaScript + Express + NodeJS
 
 Check README.md inside folder for install instructions.
 

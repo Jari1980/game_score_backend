@@ -1,11 +1,15 @@
 import { pool } from "./db.js";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 
-const SUPERADMIN_USERNAME = "superadmin";
-const SUPERADMIN_PASSWORD = "SuperAdmin123";
-const SUPERADMIN_FIRST_NAME = "Super";
-const SUPERADMIN_LAST_NAME = "Admin";
-const SUPERADMIN_ROLE = "admin";
+dotenv.config();
+
+//see superadmin.env for template
+const SUPERADMIN_USERNAME = process.env.SUPERADMIN_USERNAME;
+const SUPERADMIN_PASSWORD = process.env.SUPERADMIN_PASSWORD;
+const SUPERADMIN_FIRST_NAME = process.env.SUPERADMIN_FIRST_NAME;
+const SUPERADMIN_LAST_NAME = process.env.SUPERADMIN_LAST_NAME;
+const SUPERADMIN_ROLE = process.env.SUPERADMIN_ROLE || "admin";
 
 export async function seedSuperAdmin() {
   try {
