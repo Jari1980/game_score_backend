@@ -1,7 +1,7 @@
 @API_URL=http://localhost:3000/api/v1/auth
-@token=PLACEHOLDER
-@username=PLACEHOLDER
-@password=PLACEHOLDER
+@token=
+@username=
+@password=
 
 ### create
 POST {{API_URL}}/register

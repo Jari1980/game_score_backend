@@ -1,5 +1,5 @@
 @API_URL=http://localhost:3000/api/v1/match
-@token=PLACEHOLDER
+@token=
 
 ### create
 POST {{API_URL}}
