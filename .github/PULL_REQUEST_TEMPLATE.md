@@ -11,7 +11,9 @@
 
 ## Checklist
 
-Add x inside [] to check if applicable, else leave unchecked:
+<!-- Must have space inside [] to show as checkbox -->
+
+Add x inside [ ] to check if applicable, else leave unchecked:
 
 Required
 
@@ -20,4 +22,5 @@ Required
 Optional
 
 - [ ] Tests added or updated
+- [ ] Configurations added or updated
 - [ ] Documentation updated
