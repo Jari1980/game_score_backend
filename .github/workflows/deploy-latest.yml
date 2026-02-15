@@ -22,6 +22,6 @@ jobs:
       #folder root must have procfile
       #https://www.koyeb.com/docs/build-and-deploy/build-from-git#execution-run-command-and-the-procfile
       - name: Deploy to existing service via Koyeb CLI
-        working-directory: be_repo/js_serverless
+        working-directory: ./js_serverless
         run: |
-          koyeb deploy ./js_serverless ${{ secrets.KOYEB_APP_NAME }}/${{ secrets.KOYEB_SERVICE_NAME }}
+          koyeb deploy . ${{ secrets.KOYEB_APP_NAME }}/${{ secrets.KOYEB_SERVICE_NAME }}
