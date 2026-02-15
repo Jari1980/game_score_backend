@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - rewrite
-      # - main
   pull_request:
     branches:
       - rewrite
-      # - main
   workflow_dispatch:
 
 jobs:
