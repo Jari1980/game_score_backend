@@ -1,7 +1,7 @@
 @API_URL=http://localhost:3000/api/v1/match
 @token=
 
-### create
+### create, admin role required
 POST {{API_URL}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -16,10 +16,12 @@ Content-Type: application/json
 
 ### get all
 GET {{API_URL}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ### search
 @searchTerm=team
 
-GET {{API_URL}}/search?team={{searchTerm}}
+GET {{API_URL}}/search?team=Team
+Authorization: Bearer {{token}}
 Content-Type: application/json
