@@ -71,3 +71,27 @@ export async function findMatchesByTeam(team) {
   );
   return rows;
 }
+
+
+//Get matches after Id, used for announcement
+export async function getMatchesAfterId(lastId) {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      matchid,
+      entry_created,
+      match_date,
+      home_team,
+      away_team,
+      home_team_score,
+      away_team_score,
+      winning_team
+    FROM matches
+    WHERE matchid > $1
+    ORDER BY matchid ASC
+    `,
+    [lastId]
+  );
+
+  return rows;
+}

@@ -32,7 +32,7 @@
  *     GetAllMatches:
  *       type: object
  *       properties:
- *         matchId:
+ *         matchid:
  *           type: integer
  *         homeTeam:
  *           type: string
