@@ -13,6 +13,7 @@ const router = express.Router();
  * @swagger
  * /api/v1/auth/register:
  *   post:
+ *     tags: [Auth] 
  *     summary: Register a new user
  *     requestBody:
  *       required: true
@@ -62,6 +63,7 @@ router.post("/register", async (req, res) => {
  * @swagger
  * /api/v1/auth/login:
  *   post:
+ *     tags: [Auth] 
  *     summary: Login a user
  *     requestBody:
  *       required: true
@@ -107,6 +109,7 @@ router.post("/login", async (req, res) => {
  * @swagger
  * /api/v1/auth/me:
  *   get:
+ *     tags: [Auth] 
  *     summary: Get current authenticated user
  *     security:
  *       - bearerAuth: []
