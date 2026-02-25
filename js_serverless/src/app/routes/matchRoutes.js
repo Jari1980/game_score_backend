@@ -3,6 +3,7 @@ import {
   submitMatchScore,
   getAllMatches,
   findMatchesByTeam,
+  getMatchesAfterId
 } from "../../services/matchService.js";
 import validateMatch from "../../utils/validateMatch.js";
 import { verifyToken } from "../../utils/jwt.js";
@@ -42,6 +43,7 @@ function auth(requiredRole) {
  * @swagger
  * /api/v1/match:
  *   post:
+ *     tags: [Match]
  *     summary: Submit a new match score (admin only)
  *     description: Requires a valid JWT with role `admin`
  *     security:
@@ -83,6 +85,7 @@ router.post("/", auth("admin"), async (req, res) => {
  * @swagger
  * /api/v1/match:
  *   get:
+ *     tags: [Match]
  *     summary: Get all matches
  *     description: Any authenticated user
  *     security:
@@ -116,6 +119,7 @@ router.get("/", auth(), async (_req, res) => {
  * @swagger
  * /api/v1/match/search:
  *   get:
+ *     tags: [Match]
  *     summary: Find matches by team name
  *     description: Any authenticated user
  *     security:
@@ -141,6 +145,52 @@ router.get("/search", auth(), async (req, res) => {
     if (!team) return res.status(400).send("Missing team query parameter");
 
     const matches = await findMatchesByTeam(team);
+    res.json(matches);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /api/v1/match/recent:
+ *   get:
+ *     tags: [Match]
+ *     summary: Get matches created after a specific matchId
+ *     description: |
+ *       Returns matches with a matchId greater than the provided lastId.
+ *       Intended for polling new matches from the frontend.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: lastId
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: The last matchId the client has seen
+ *     responses:
+ *       200:
+ *         description: List of new matches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/GetAllMatches'
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ */
+
+// GET /api/v1/match -> get matches after Id
+// Will be polled from frontend
+// Any user logged in
+router.get("/recent", auth(), async (req, res) => {
+  try {
+    const lastId = parseInt(req.query.lastId, 10) || 0;
+
+    const matches = await getMatchesAfterId(lastId);
     res.json(matches);
   } catch (err) {
     console.error(err);
