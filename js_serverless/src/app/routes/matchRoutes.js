@@ -1,3 +1,4 @@
+import { broadcastNewMatch } from "../../websocket.js";
 import express from "express";
 import {
   submitMatchScore,
@@ -42,8 +43,12 @@ function auth(requiredRole) {
  * @swagger
  * /api/v1/match:
  *   post:
+ *     tags: [Match] 
  *     summary: Submit a new match score (admin only)
- *     description: Requires a valid JWT with role `admin`
+ *     description: > 
+ *       Requires a valid JWT with role `admin`.
+ *       When a match is successfully created, a **WebSocket notification** is broadcast
+ *       to all connected clients on `/ws`.
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -72,6 +77,10 @@ router.post("/", auth("admin"), async (req, res) => {
     // Validating input
     validateMatch(req.body);
     const match = await submitMatchScore(req.body);
+
+    //Notify all connected users instantly
+    broadcastNewMatch(match);
+
     res.status(201).json(match); // return created match
   } catch (err) {
     console.error(err);
@@ -83,6 +92,7 @@ router.post("/", auth("admin"), async (req, res) => {
  * @swagger
  * /api/v1/match:
  *   get:
+ *     tags: [Match] 
  *     summary: Get all matches
  *     description: Any authenticated user
  *     security:
@@ -116,6 +126,7 @@ router.get("/", auth(), async (_req, res) => {
  * @swagger
  * /api/v1/match/search:
  *   get:
+ *     tags: [Match] 
  *     summary: Find matches by team name
  *     description: Any authenticated user
  *     security:

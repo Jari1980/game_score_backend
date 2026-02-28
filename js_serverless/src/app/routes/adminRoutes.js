@@ -12,6 +12,7 @@ const router = express.Router();
  * @swagger
  * /api/v1/admin/users:
  *   get:
+ *     tags: [Admin]
  *     summary: List all users
  *     description: Admin-only endpoint
  *     security:
@@ -54,6 +55,7 @@ router.get("/users", async (req, res) => {
  * @swagger
  * /api/v1/admin/users/{id}/role:
  *   put:
+ *     tags: [Admin]
  *     summary: Update a user's role
  *     description: Admin-only endpoint
  *     security:
@@ -122,6 +124,7 @@ router.put("/users/:id/role", async (req, res) => {
  * @swagger
  * /api/v1/admin/users/{id}:
  *   delete:
+ *     tags: [Admin] 
  *     summary: Delete a user
  *     description: Admin-only endpoint
  *     security:

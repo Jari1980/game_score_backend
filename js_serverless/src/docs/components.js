@@ -32,7 +32,7 @@
  *     GetAllMatches:
  *       type: object
  *       properties:
- *         matchId:
+ *         matchid:
  *           type: integer
  *         homeTeam:
  *           type: string
@@ -126,4 +126,46 @@
  *           type: string
  *         user:
  *           $ref: '#/components/schemas/User'
+ *     WebSocketNewMatch:
+ *       type: object
+ *       properties:
+ *         type:
+ *           type: string
+ *           example: "NEW_MATCH"
+ *         payload:
+ *           $ref: '#/components/schemas/GetAllMatches'
+ *
+ * tags:
+ *   - name: WebSocket
+ *     description: Real-time notifications for newly added matches
+ *
+ * paths:
+ *   /ws:
+ *     get:
+ *       summary: WebSocket endpoint for new match notifications
+ *       tags:
+ *         - WebSocket
+ *       description: |
+ *         Connect to this WebSocket to receive real-time notifications
+ *         when a new match is added. Messages are JSON objects like:
+ *
+ *         ```json
+ *         {
+ *           "type": "NEW_MATCH",
+ *           "payload": {
+ *             "matchid": 123,
+ *             "homeTeam": "Team A",
+ *             "awayTeam": "Team B",
+ *             "homeTeamScore": 2,
+ *             "awayTeamScore": 1,
+ *             "entryCreated": "2026-02-25",
+ *             "matchDate": "2026-02-25",
+ *             "winningTeam": "Team A"
+ *           }
+ *         }
+ *         ```
+ *
+ *       responses:
+ *         "101":
+ *           description: Switching Protocols – WebSocket connection established
  */
