@@ -50,6 +50,24 @@
  *           format: date
  *         winningTeam:
  *           type: string
+ * 
+ *     MatchStatistics:
+ *       type: object
+ *       properties:
+ *         avg_home_score:
+ *           type: number
+ *           format: float
+ *         avg_away_score:
+ *           type: number
+ *           format: float
+ *         min_home_score:
+ *           type: integer
+ *         max_home_score:
+ *           type: integer
+ *         min_away_score:
+ *           type: integer
+ *         max_away_score:
+ *           type: integer
  *
  *     RegisterRequest:
  *       type: object

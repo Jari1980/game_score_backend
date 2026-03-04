@@ -71,3 +71,21 @@ export async function findMatchesByTeam(team) {
   );
   return rows;
 }
+
+// Get match score statistics
+export async function getMatchStatistics() {
+  const { rows } = await pool.query(`
+    SELECT
+      AVG(home_team_score) AS avg_home_score,
+      AVG(away_team_score) AS avg_away_score,
+
+      MIN(home_team_score) AS min_home_score,
+      MAX(home_team_score) AS max_home_score,
+
+      MIN(away_team_score) AS min_away_score,
+      MAX(away_team_score) AS max_away_score
+    FROM matches
+  `);
+
+  return rows[0];
+}
