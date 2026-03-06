@@ -4,6 +4,7 @@ import {
   submitMatchScore,
   getAllMatches,
   findMatchesByTeam,
+  getMatchStatistics,
 } from "../../services/matchService.js";
 import validateMatch from "../../utils/validateMatch.js";
 import { verifyToken } from "../../utils/jwt.js";
@@ -153,6 +154,35 @@ router.get("/search", auth(), async (req, res) => {
 
     const matches = await findMatchesByTeam(team);
     res.json(matches);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /api/v1/match/statistics:
+ *   get:
+ *     tags: [Match]
+ *     summary: Get aggregated match score statistics
+ *     description: Returns average, minimum and maximum scores for home and away teams.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Aggregated match statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MatchStatistics'
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/statistics", auth(), async (_req, res) => {
+  try {
+    const stats = await getMatchStatistics();
+    res.json(stats);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
